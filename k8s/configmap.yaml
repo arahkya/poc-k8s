@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bbl-poc-cm
+  namespace: bbl-poc
+data:
+  fluent-bit.conf: |
+    [SERVICE]
+      Daemon Off
+      Flush 1
+      log_level info
+
+    [INPUT]
+      Name tail
+      Path /var/log/bbl-poc/*    
+
+    [FILTER]
+      Name parser
+      Match *
+      Key_Name log
+      Parser bbl-poc-log-parser
+
+    [OUTPUT]
+      Name stdout
+      Match *
+
+  parsers.conf: |
+    [PARSER]
+      Name   bbl-poc-log-parser
+      Format regex
+      Regex  ^(?<createDate>\d{4}-\d{2}-\d{2})\s(?<createTime>\d{2}:\d{2}:\d{2}.\d{3})[\s|\W\d]{8}\[(?<podName>.*?)\]\s\[(?<logType>.*?)\]\s*(?<logMessage>.*?)$
+      

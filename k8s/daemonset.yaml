@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: bbl-poc-daemonset-fluent-bit
+  namespace: bbl-poc
+  labels:
+    app: bbl-poc-daemonset-fluent-bit
+spec:
+  selector:
+    matchLabels:
+      app: bbl-poc-daemonset-fluent-bit
+  template:
+    metadata:
+      labels:
+        app: bbl-poc-daemonset-fluent-bit
+    spec:
+      containers:
+      - args:
+        - --workdir=/fluent-bit/etc
+        - --config=/fluent-bit/etc/conf/fluent-bit.conf
+        - --parser=/fluent-bit/etc/conf/parsers.conf
+        command:
+        - /fluent-bit/bin/fluent-bit
+        name: fluent-bit
+        image: cr.fluentbit.io/fluent/fluent-bit:3.0.3
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: central-logs
+          mountPath: /var/log/bbl-poc/
+          readOnly: true
+        - mountPath: /fluent-bit/etc/conf
+          name: config
+          readOnly: true
+        env:
+        - name: LOG_LOCATION
+          value: /var/log/bbl-poc/
+      volumes:
+      - name: central-logs
+        hostPath:
+          path: /var/log/bbl-poc/
+          type: DirectoryOrCreate
+      - name: config
+        configMap:
+          name: bbl-poc-cm
+          defaultMode: 420
+

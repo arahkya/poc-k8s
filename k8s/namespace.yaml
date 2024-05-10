@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  creationTimestamp: "2024-05-09T04:31:01Z"
+  labels:
+    kubernetes.io/metadata.name: bbl-poc
+  name: bbl-poc
+  resourceVersion: "503"
+  uid: ea74cc0f-a588-4f6e-98c6-3bc5e1e3f29a
+spec:
+  finalizers:
+  - kubernetes
+status:
+  phase: Active
