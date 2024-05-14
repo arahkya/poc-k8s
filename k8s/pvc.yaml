@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: bbl-poc-pvc
+  namespace: bbl-poc
+spec:
+  accessModes:
+    - ReadWriteMany
+  dataSource:
+    name: bbl-poc-snapshot
+    kind: VolumeSnapshot
+    apiGroup: snapshot.storage.k8s.io
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: csi-hostpath-sc
+  

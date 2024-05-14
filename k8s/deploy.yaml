@@ -32,9 +32,8 @@ spec:
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
         volumeMounts:
-          - name: central-logs
+          - name: log-volume
             mountPath: /var/log/bbl-poc/
-            readOnly: false
         env:
         - name: TZ
           value: Asia/Bangkok
@@ -51,8 +50,7 @@ spec:
       securityContext: {}
       terminationGracePeriodSeconds: 30
       volumes:
-      - name: central-logs
-        hostPath:
-          path: /var/log/bbl-poc/
-          type: DirectoryOrCreate
+      - name: log-volume
+        persistentVolumeClaim:
+          claimName: bbl-poc-pvc
 status: {}
