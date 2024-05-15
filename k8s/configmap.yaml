@@ -21,6 +21,14 @@ data:
       Parser bbl-poc-log-parser
 
     [OUTPUT]
+      Name azure
+      Match *
+      Customer_ID 3124dee0-467e-4fab-a26d-ba715b62fae9
+      Shared_Key m+5oBN96/urpCKMtpPuRbvLuz/fJxmCECNX7KOcrpQHsaQjsJHa247+U4pxKOJ4YFwcbngJM3rVLmBMBwaWoGg==
+      Time_Generated on
+      Log_Type bbl_poc
+
+    [OUTPUT]
       Name stdout
       Match *
 
