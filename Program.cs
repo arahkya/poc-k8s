@@ -1,18 +1,18 @@
 using Serilog;
 using Serilog.Events;
+using Serilog.Formatting.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Config Serilog
-string logTemplate = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{POD_NAME}] [{Level:u3}] {Message:lj}{NewLine}{Exception}";
-string logLocation = Environment.GetEnvironmentVariable("LOG_LOCATION") ?? "logs/log-.txt";
+string logLocation = Environment.GetEnvironmentVariable("LOG_LOCATION") ?? "logs/log-.json";
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
     .Enrich.FromLogContext()
     .Enrich.WithEnvironmentVariable("POD_NAME")
-    .WriteTo.File(logLocation, rollingInterval: RollingInterval.Day, outputTemplate: logTemplate)
-    .WriteTo.Console(outputTemplate: logTemplate)
+    .WriteTo.File(new JsonFormatter(), logLocation, rollingInterval: RollingInterval.Day)
+    .WriteTo.Console()
     .CreateLogger();
 
 // Add services to the container.
