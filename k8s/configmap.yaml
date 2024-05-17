@@ -12,13 +12,22 @@ data:
 
     [INPUT]
       Name tail
-      Path /var/log/bbl-poc/*    
+      Path /var/log/bbl-poc/*
 
     [FILTER]
       Name parser
       Match *
       Key_Name log
-      Parser bbl-poc-log-parser
+      Parser docker
+
+    [OUTPUT]
+      Name azure
+      Match *
+      Customer_ID 8be78a6d-7080-45a0-add0-6e8ee4215cc2
+      Shared_Key Mbn6fPo0ZrGzuK/dn6Pvfug4uzaFNDCoJzJAh0JZjv0+SQuH+WxkyvEoL1p7epCY/7RynLp8o2wOx11IwMLm+w==
+      Time_Key Timestamp
+      Time_Generated off
+      Log_Type bbl_poc
 
     [OUTPUT]
       Name azure
@@ -38,3 +47,9 @@ data:
       Format regex
       Regex  ^(?<createDate>\d{4}-\d{2}-\d{2})\s(?<createTime>\d{2}:\d{2}:\d{2}.\d{3})[\s|\W\d]{8}\[(?<podName>.*?)\]\s\[(?<logType>.*?)\]\s*(?<logMessage>.*?)$
       
+    [PARSER]
+        Name        docker
+        Format      json
+        Time_Key    time
+        Time_Format %Y-%m-%dT%H:%M:%S.%L
+        Time_Keep   On
