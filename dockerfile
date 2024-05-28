@@ -19,4 +19,4 @@ WORKDIR /app
 
 COPY --from=BUILD /app ./
 
-ENTRYPOINT ["dotnet", "LogAnalytic.dll"]
+ENTRYPOINT ["dotnet", "CloudPoc.dll"]
