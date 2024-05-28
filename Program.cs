@@ -4,6 +4,9 @@ using Serilog.Formatting.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Config Appsetting
+builder.Configuration.AddJsonFile("appsettings.weatherforecast.json", optional: true, reloadOnChange: true);
+
 // Config Serilog
 string logLocation = Environment.GetEnvironmentVariable("LOG_LOCATION") ?? "logs/log-.json";
 Log.Logger = new LoggerConfiguration()
@@ -35,8 +38,9 @@ var summaries = new[]
 
 app.MapGet("/weatherforecast", () =>
 {
+    int forecastLimit = app.Configuration.GetValue<int>("ForecastLimit");
     Log.Information("Forcast Weather Requested");
-    var forecast = Enumerable.Range(1, 5).Select(index =>
+    var forecast = Enumerable.Range(1, forecastLimit).Select(index =>
         new WeatherForecast
         (
             DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
